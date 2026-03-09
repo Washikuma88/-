@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鍾任哲｜瑞源投顧 × 家族辦公室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+TC:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f7f4ef;
+    --gold: #b89a5a;
+    --gold-light: #d4b87a;
+    --muted: #7a7570;
+    --rule: rgba(184,154,90,0.25);
+    --white: #fdfcfa;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 300;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* ── Custom Cursor ── */
+  #cursor {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+  #cursor-ring {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s cubic-bezier(0.23,1,0.32,1), height 0.4s cubic-bezier(0.23,1,0.32,1), opacity 0.3s ease;
+    opacity: 0.6;
+  }
+
+  /* ── Noise Texture Overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 28px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    mix-blend-mode: multiply;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 40px; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 120px 60px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.5s forwards;
+  }
+
+  .hero-name-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.7s forwards;
+  }
+
+  .hero-tagline {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 380px;
+    border-left: 1px solid var(--gold);
+    padding-left: 24px;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.9s forwards;
+  }
+
+  .hero-stats {
+    display: flex; gap: 48px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.1s forwards;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-num span { font-size: 1rem; color: var(--gold); margin-left: 2px; }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, var(--paper) 0%, transparent 40%);
+    z-index: 1;
+  }
+  .hero-img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: sepia(15%) contrast(1.05);
+    transform: scale(1.05);
+    animation: heroImgReveal 2s ease 0.2s forwards;
+  }
+  @keyframes heroImgReveal {
+    from { transform: scale(1.1); opacity: 0.7; }
+    to { transform: scale(1.0); opacity: 1; }
+  }
+
+  .hero-decoration {
+    position: absolute;
+    bottom: 32px; left: 60px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.4s forwards;
+  }
+
+  .scroll-line {
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 1px; height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+    opacity: 0;
+    animation: fadeIn 1.5s ease 1.8s forwards;
+  }
+
+  /* ── Section Common ── */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 48px; height: 1px;
+    background: var(--gold);
+    margin: 32px 0;
+  }
+
+  /* ── About ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    background: var(--white);
+    position: relative;
+  }
+
+  #about::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30rem;
+    color: var(--gold);
+    opacity: 0.04;
+    position: absolute;
+    top: -60px; left: 40px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 2.1;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .about-text p strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .about-credentials {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .credential-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 24px;
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .credential-item::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s ease;
+  }
+  .credential-item:hover { border-color: var(--gold); }
+  .credential-item:hover::before { transform: scaleY(1); }
+
+  .credential-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.4;
+    line-height: 1;
+    min-width: 40px;
+  }
+  .credential-content h4 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  .credential-content p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+
+  /* ── Services ── */
+  #services {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #services::after {
+    content: 'WEALTH';
+    position: absolute;
+    right: -20px; bottom: -60px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    font-weight: 300;
+    color: rgba(184,154,90,0.04);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  #services .section-title { color: var(--paper); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(184,154,90,0.15);
+    margin-top: 64px;
+  }
+
+  .service-card {
+    background: var(--ink);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+  }
+  .service-card:hover { background: #161410; }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 28px;
+    opacity: 0.7;
+  }
+
+  .service-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .service-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--paper);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .service-card p {
+    font-size: 0.82rem;
+    line-height: 1.9;
+    color: rgba(247,244,239,0.45);
+  }
+
+  .service-tag {
+    display: inline-block;
+    margin-top: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    border: 1px solid rgba(184,154,90,0.3);
+    padding: 6px 14px;
+    text-transform: uppercase;
+  }
+
+  /* ── Philosophy ── */
+  #philosophy {
+    background: var(--paper);
+    text-align: center;
+    padding: 140px 60px;
+    position: relative;
+  }
+
+  .quote-block {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3vw, 2.8rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .quote-text::before {
+    content: '';
+    display: block;
+    width: 1px; height: 60px;
+    background: var(--gold);
+    margin: 0 auto 40px;
+  }
+
+  .quote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    max-width: 900px;
+    margin: 100px auto 0;
+  }
+
+  .pillar h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .pillar p {
+    font-size: 0.8rem;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+  .pillar-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  /* ── Offices ── */
+  #offices {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    min-height: 60vh;
+  }
+
+  .office-pane {
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+
+  .office-pane:first-child {
+    background: var(--white);
+    border-right: 1px solid var(--rule);
+  }
+
+  .office-pane:last-child {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .office-city {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .office-city-en {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .office-detail {
+    font-size: 0.82rem;
+    line-height: 2.0;
+    color: var(--muted);
+  }
+
+  .office-pane:last-child .office-detail { color: rgba(247,244,239,0.5); }
+  .office-pane:last-child .office-city { color: var(--paper); }
+
+  .office-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .office-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ── Numbers ── */
+  #numbers {
+    background: var(--paper);
+    padding: 100px 60px;
+  }
+
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    margin-top: 64px;
+  }
+
+  .number-item {
+    background: var(--paper);
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  .number-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .number-big em {
+    font-style: normal;
+    color: var(--gold);
+    font-size: 0.6em;
+  }
+
+  .number-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+
+  /* ── Threads ── */
+  #threads {
+    background: var(--ink);
+    padding: 120px 60px;
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #threads .section-title { color: var(--paper); }
+
+  .threads-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .thread-card {
+    border: 1px solid rgba(184,154,90,0.15);
+    padding: 32px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .thread-card:hover {
+    border-color: rgba(184,154,90,0.45);
+    transform: translateY(-4px);
+  }
+
+  .thread-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .thread-text {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: rgba(247,244,239,0.7);
+  }
+
+  .thread-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    color: rgba(184,154,90,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ── Contact ── */
+  #contact {
+    background: var(--paper);
+    padding: 140px 60px;
+    text-align: center;
+    position: relative;
+  }
+
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+
+  .contact-note {
+    font-size: 0.85rem;
+    line-height: 2.0;
+    color: var(--muted);
+    margin-bottom: 56px;
+  }
+
+  .contact-btn {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 18px 48px;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    cursor: none;
+  }
+  .contact-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .contact-divider {
+    display: flex; align-items: center; gap: 24px;
+    margin: 48px 0;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .contact-divider::before, .contact-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .contact-info {
+    display: flex; justify-content: center; gap: 60px;
+  }
+  .contact-info-item {}
+  .contact-info-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .contact-info-value {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .compliance-note {
+    margin-top: 80px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    opacity: 0.6;
+    line-height: 1.9;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid var(--rule);
+    padding-top: 40px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--ink);
+    padding: 48px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: rgba(247,244,239,0.3);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 900px) {
+    nav { padding: 24px 28px; }
+    .nav-links { display: none; }
+    section { padding: 80px 28px; }
+
+    #hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 120px 28px 60px; }
+    .hero-right { height: 50vh; }
+
+    #about { grid-template-columns: 1fr; gap: 48px; padding: 80px 28px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr; gap: 40px; }
+    #offices { grid-template-columns: 1fr; min-height: auto; }
+    .office-pane { padding: 60px 28px; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .threads-feed { grid-template-columns: 1fr; }
+    .contact-info { flex-direction: column; gap: 28px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    #philosophy { padding: 80px 28px; }
+    #numbers, #threads, #contact { padding: 80px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">鍾任哲 · 瑞源投顧</a>
+  <div class="nav-links">
+    <a href="#about">關於</a>
+    <a href="#services">服務</a>
+    <a href="#offices">辦公室</a>
+    <a href="#contact">聯絡</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">全權委託投資 · 家族辦公室</div>
+    <h1 class="hero-name">鍾任哲</h1>
+    <div class="hero-name-en" style="display:none;"></div>
+    <p class="hero-tagline">
+      讓客戶感到安心，是我認為最重要的事。<br>
+      從全權委託到家族辦公室，我們承載的不只是資金，而是每一個家族的未來。
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">1.5<span>億</span></div>
+        <div class="stat-label">全委規模</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">16<span>位</span></div>
+        <div class="stat-label">信任客戶</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5<span>年+</span></div>
+        <div class="stat-label">實戰交易資歷</div>
+      </div>
+    </div>
+    </div>
+  <div class="hero-right">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:32px;z-index:2;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:clamp(3rem,8vw,9rem);font-weight:300;color:rgba(184,154,90,0.08);line-height:1;letter-spacing:0.15em;user-select:none;">瑞源</div>
+      <div style="width:1px;height:80px;background:linear-gradient(to bottom,transparent,rgba(184,154,90,0.3),transparent);"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.4em;color:rgba(184,154,90,0.4);text-transform:uppercase;writing-mode:vertical-rl;">Wealth · Trust · Integrity</div>
+    </div>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text reveal">
+    <div class="section-label">About · 關於我</div>
+    <h2 class="section-title">五年全職交易，<br>用真實資金換來的判斷力。</h2>
+    <div class="divider"></div>
+    <p>我叫鍾任哲，畢業於中信金融管理學院，土生土長的台灣人，在屏東生活。</p>
+    <p>全職交易五年，見過多頭的狂歡，也撐過空頭的煎熬。身邊的老闆與朋友們陸續有了財富管理的需求，我意識到：與其把經驗留在自己身上，不如出來做一件<strong>有規模、有意義</strong>的事。</p>
+    <p>做就要做合法，做就要做有規模。在瑞源，我們紮實地把資本額做到七千萬，取得全權委託投資與家族辦公室的合法牌照。不是為了好看，而是因為客戶的信任，值得這樣的規格。</p>
+    <p>我自己也持續進行<strong>土地與不動產投資</strong>，涵蓋建地與農地的實際持有與操作。從 Toyota 到 Tesla 到 Land Rover，一路走來對資產的感受從來都不只是數字，真實的配置經驗，才是給客戶最好的底氣。</p>
+    <p>讓客戶感到安心，是我認為最重要的事。</p>
+  </div>
+  <div class="about-credentials reveal">
+    <div class="credential-item">
+      <div class="credential-num">5</div>
+      <div class="credential-content">
+        <h4>五年全職交易資歷</h4>
+        <p>見過多頭的狂歡，也撐過空頭的煎熬<br>用真實資金建立起對市場的直覺與紀律</p>
+      </div>
+    </div>
+    <div class="credential-item">
+      <div class="credential-num">✦</div>
+      <div class="credential-content">
+        <h4>多元資產實戰配置</h4>
+        <p>股票、土地、不動產同步進行<br>不只管理客戶的錢，也管理自己的資產</p>
+      </div>
+    </div>
+    <div class="credential-item">
+      <div class="credential-num">✦</div>
+      <div class="credential-content">
+        <h4>合法持牌，全程受監管</h4>
+        <p>全權委託投資管理執照 · 家族辦公室執照<br>受金管會監管，投信投顧公會會員</p>
+      </div>
+    </div>
+    <div class="credential-item">
+      <div class="credential-num">✦</div>
+      <div class="credential-content">
+        <h4>讓人感到安心的能力</h4>
+        <p>最想聽到的客戶回饋是：「這個人讓我安心。」<br>深度傾聽，建立長期信任關係</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-label">Services · 服務項目</div>
+    <h2 class="section-title">不只是投資，<br>是財富的完整佈局。</h2>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">◈</div>
+      <span class="service-num">01</span>
+      <h3>全權委託<br>代操服務</h3>
+      <p>授權我們代為操作，定期提供週報與月報。您不必每天盯盤，只需要信任您選擇的人。我們的價值，在行情回檔時才真正體現。</p>
+      <div class="service-tag">金管會核准 · 合法持牌</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">◇</div>
+      <span class="service-num">02</span>
+      <h3>家族辦公室<br>整合服務</h3>
+      <p>為高淨值家族提供跨世代的財富規劃，涵蓋資產配置、傳承架構、稅務規劃與風險管理，打造屬於您家族的專屬財富體系。</p>
+      <div class="service-tag">金管會核准 · 合法牌照</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">○</div>
+      <span class="service-num">03</span>
+      <h3>財務顧問<br>諮詢服務</h3>
+      <p>不適合全委的客戶，可選擇單次或定期的財務諮詢。我們提供客觀的市場分析視角，協助您做出更有把握的財務決策。</p>
+      <div class="service-tag">預約制</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy">
+  <div class="quote-block reveal">
+    <p class="quote-text">
+      「這個人讓我感到安心。」<br>是我最想聽到的一句話。
+    </p>
+    <div class="quote-attr">鍾任哲 · 瑞源投顧</div>
+  </div>
+  <div class="pillars reveal">
+    <div class="pillar">
+      <div class="pillar-num">一</div>
+      <h4>誠信優先</h4>
+      <p>不管贏或輸，我們選擇坦然讓社會大眾檢視我們的能力。誠信是做生意的根本，也是一切的起點。</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">二</div>
+      <h4>耐心等待</h4>
+      <p>留下現金，而非抱過一座山。市場最怕的不是做錯，是沒有紀律。能空手等待，是真正的能力。</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">三</div>
+      <h4>長期信任</h4>
+      <p>從看不懂報告到只問分潤，代表信任已經建立。我們的工作，就是值得被這樣期待。</p>
+    </div>
+  </div>
+</section>
+
+<!-- OFFICES -->
+<div id="offices">
+  <div class="office-pane reveal">
+    <div class="office-city">台北</div>
+    <div class="office-city-en">Taipei · Headquarters</div>
+    <div class="office-detail">
+      瑞源證券投資顧問股份有限公司<br>
+      台北市松山區民生東路三段131號3樓（305室）<br>
+      (02) 2778-0315
+    </div>
+    <div style="margin-top:24px;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:#b89a5a;line-height:2.2;border-top:1px solid rgba(184,154,90,0.35);padding-top:20px;">
+      營利事業登記證號｜(114)金管投顧新字第024號<br>
+      統一編號｜80188385
+    </div>
+    <div class="office-badge">總公司 · 全委牌照</div>
+  </div>
+  <div class="office-pane reveal">
+    <div class="office-city">高雄</div>
+    <div class="office-city-en">Kaohsiung · Branch</div>
+    <div class="office-detail">
+      高雄分公司<br>
+      高雄市苓雅區四維三路6號9樓之1（A2室）<br>
+      (07) 335-7998
+    </div>
+    <div class="office-badge">家族辦公室服務據點</div>
+  </div>
+</div>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <div class="reveal">
+    <div class="section-label">Track Record · 成績單</div>
+    <h2 class="section-title">數字不說謊。</h2>
+  </div>
+  <div class="numbers-grid reveal">
+    <div class="number-item">
+      <div class="number-big">1.5<em>億</em></div>
+      <div class="number-desc">全委管理規模<br>截至 2026 年 1 月</div>
+    </div>
+    <div class="number-item">
+      <div class="number-big">16<em>位</em></div>
+      <div class="number-desc">信任我們的客戶<br>每一位都是真實的人</div>
+    </div>
+    <div class="number-item">
+      <div class="number-big">10<em>萬</em></div>
+      <div class="number-desc">Threads 月觸及<br>投資心得持續輸出</div>
+    </div>
+    <div class="number-item">
+      <div class="number-big">5<em>年+</em></div>
+      <div class="number-desc">全職實戰交易資歷<br>真實資金累積的判斷力</div>
+    </div>
+  </div>
+  <p style="font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--muted);margin-top:24px;line-height:1.9;">
+    ※ 數據來源：投信投顧公會公開資料 / 客戶真實對帳單。過去績效不代表未來獲利，投資涉及風險，投資人應獨立判斷，自負盈虧。
+  </p>
+</section>
+
+<!-- THREADS FEED -->
+<section id="threads">
+  <div class="reveal">
+    <div class="section-label">Threads · @beachillguy1688</div>
+    <h2 class="section-title">投資心得，<br>持續輸出。</h2>
+  </div>
+  <div class="threads-feed reveal">
+    <div class="thread-card">
+      <div class="thread-meta">心境分享 · 近期</div>
+      <p class="thread-text">
+        每一架起飛的飛機，都承載著每個人對遠方的渴望。後來的我，沒能成為機師，卻也同樣乘載了許多人的夢想——截至1月底，全委金額已來到1.5億，承載了16位客戶的期待。
+      </p>
+      <div class="thread-tag">Type D · 品牌敘事</div>
+    </div>
+    <div class="thread-card">
+      <div class="thread-meta">操作回顧 · 近期</div>
+      <p class="thread-text">
+        從年前減碼以來，踏空了整整半個月，手上一直扣著超過70%的現金。客戶比我們急，我都說：再等等，不急。只要相信你選的人，並相信他的判斷就好。
+      </p>
+      <div class="thread-tag">Type B · 操作回顧</div>
+    </div>
+    <div class="thread-card">
+      <div class="thread-meta">季度檢討 · Q4-Q1</div>
+      <p class="thread-text">
+        不管贏或輸，「誠信」是我們做生意的根本。在各行各業都講求公開透明的時代，作為投顧圈的一份子，我們選擇坦然讓社會大眾檢視我們的能力。
+      </p>
+      <div class="thread-tag">Type C · 績效揭露</div>
+    </div>
+  </div>
+  <div style="margin-top:48px;text-align:center;">
+    <a href="https://www.threads.net/@beachillguy1688" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.25em;color:var(--gold);text-decoration:none;text-transform:uppercase;border-bottom:1px solid rgba(184,154,90,0.3);padding-bottom:4px;">
+      Follow on Threads →
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-label">Contact · 聯絡</div>
+    <h2 class="section-title" style="text-align:center;">讓我們談談<br>你的財富計畫。</h2>
+    <div class="divider" style="margin:32px auto;"></div>
+    <p class="contact-note">
+      無論是全權委託、家族辦公室規劃，<br>
+      或只是想聊聊投資這件事，都歡迎與我聯繫。<br>
+      我們採預約制，以確保每位客戶都能獲得完整的關注。
+    </p>
+    <a href="https://line.me/R/ti/p/@806akhdo" target="_blank" class="contact-btn">加入 LINE 預約諮詢</a>
+    <div class="contact-divider">或直接聯繫</div>
+    <div class="contact-info">
+      <div class="contact-info-item">
+        <div class="contact-info-label">電話</div>
+        <div class="contact-info-value">07-335-7998</div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-label">Email</div>
+        <div class="contact-info-value" id="email-display"></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-label">Threads / IG</div>
+        <div class="contact-info-value"><a href="https://www.instagram.com/beachillguy1688" target="_blank" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--rule);">@beachillguy1688</a></div>
+      </div>
+    </div>
+    <div class="compliance-note">
+      本網站內容由鍾任哲個人製作，屬個人心得與資訊分享，不構成任何投資建議或勸誘。
+      瑞源投顧依法持有全權委託投資管理執照及家族辦公室執照，受金管會監管。
+      投資必然涉及風險，過去績效不代表未來獲利，投資人應獨立判斷並自負盈虧。
+      資料來源：投信投顧公會公開資料。
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 鍾任哲 · 瑞源投顧</span>
+  <span>Taipei · Kaohsiung · Taiwan</span>
+  <span>本頁面內容屬個人心得分享，不構成投資建議</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Render email to avoid obfuscation
+  const u = 'Kuma.chung'; const d = 'swiss-ic.com';
+  const el = document.getElementById('email-display');
+  if (el) el.innerHTML = '<a href="mailto:' + u + '@' + d + '" style="color:var(--muted);text-decoration:none;">' + u + '@' + d + '</a>';
+
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Count up animation
+  function countUp(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = suffix === '億' || suffix === '萬'
+        ? parseFloat(current.toFixed(1)) + suffix
+        : Math.floor(current) + suffix;
+    }, 25);
+  }
+
+  const numObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const bigs = e.target.querySelectorAll('.number-big');
+        bigs.forEach(el => {
+          const text = el.textContent;
+          const num = parseFloat(text);
+          const suffix = text.replace(/[\d.]/g, '');
+          countUp(el, num, suffix);
+        });
+        numObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.numbers-grid').forEach(el => numObserver.observe(el));
+</script>
+</body>
+</html>
