@@ -693,7 +693,7 @@
     const timer = setInterval(() => {
       current += step;
       if (current >= target) { current = target; clearInterval(timer); }
-      el.textContent = suffix === '億' ? parseFloat(current.toFixed(1)) + suffix : Math.floor(current) + suffix;
+      el.textContent = suffix === '億' ? parseFloat(current.toFixed(2)) + suffix : Math.floor(current) + suffix;
     }, 25);
   }
   const numObserver = new IntersectionObserver((entries) => {
